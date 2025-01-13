@@ -1,0 +1,8 @@
+01_defaults_path.patch
+02_fix_wrong_return_value.patch
+05_readd_gconf_engine_key_is_writable.patch
+25_gconf-path-max-hurd.patch
+26_gtk-doc.patch
+0001-gconf-gconf-value.h-Use-G_GNUC_-BEGIN_END-_DEPRECATI.patch
+pytwonisms.patch
+call-dbus_g_thread_init.patch

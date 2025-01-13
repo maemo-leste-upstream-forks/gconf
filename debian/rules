@@ -1,0 +1,36 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/autoreconf.mk
+include /usr/share/cdbs/1/class/gnome.mk
+include /usr/share/cdbs/1/rules/utils.mk
+
+MANPAGES := debian/gconf-schemas.8
+
+build/gconf2:: $(MANPAGES)
+clean::
+	rm -f $(MANPAGES)
+
+%.8: %.xml
+	xsltproc --nonet -o debian/ \
+		/usr/share/sgml/docbook/stylesheet/xsl/nwalsh/manpages/docbook.xsl $<
+
+DEB_INSTALL_DOCS_gconf2 += doc/FAQ.txt NEWS README TODO
+
+DEB_CONFIGURE_EXTRA_FLAGS += --enable-gtk-doc \
+                             --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
+                             --libexecdir=\$${libdir}/gconf \
+                             --disable-orbit
+
+DEB_MAKE_INVOKE += pkglibdir=/usr/lib/$(DEB_HOST_MULTIARCH)/gconf
+
+LDFLAGS += -Wl,-z,defs -Wl,--as-needed
+
+DEB_DH_MAKESHLIBS_ARGS_gconf-service += -Xbackend
+DEB_DH_MAKESHLIBS_ARGS_libgconf-2-4 += -V"libgconf-2-4 (>= 2.31.1), gconf-service"
+
+DEB_COMPRESS_EXCLUDE += usr/share/doc/gconf2/html
+
+binary-install/gconf2::
+	dh_python3 -p$(cdbs_curpkg) --shebang=/usr/bin/python3
+
