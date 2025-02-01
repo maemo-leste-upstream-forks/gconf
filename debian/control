@@ -69,6 +69,7 @@ Description: GNOME configuration database system (D-Bus service)
 Package: gconf2-common
 Architecture: all
 Multi-Arch: foreign
+Pre-Depends: gconf2
 Depends: ${misc:Depends},
          ucf
 Breaks: libgconf2-4 (<< 3.2.3-2)
